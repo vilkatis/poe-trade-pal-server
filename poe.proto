@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package poe;
+
+service Poe {
+    rpc GetNotifications (Params) returns (stream Notification) {
+    }
+}
+
+message Params {
+    string session_id = 1;
+    string query_id = 2;
+}
+
+message Notification {
+    string message = 1;
+}
