@@ -27,7 +27,7 @@ function getNotifications(call) {
         call.end();
     };
 
-    setupClient(session_id, query_id, handleMessage, handleError);
+    setupClient(session_id, query_id, handleMessage, handleError, call);
 }
 
 

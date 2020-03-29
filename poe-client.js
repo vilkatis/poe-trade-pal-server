@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 // const SESSION_ID = 'bc0846ef40764df435ecee84046719a0';
 // const ID = "wlk6znhb"; // 25c
 
-module.exports = function setupClient(sessionID, queryID, messageCallback, errorCallback) {
+module.exports = function setupClient(sessionID, queryID, messageCallback, errorCallback, call) {
     const HOST = 'www.pathofexile.com';
     const FETCH_URL = "https://" + HOST + "/api/trade/fetch/";
     const WS_URL = "ws://" + HOST + "/api/trade/live/Delirium/" + queryID;
@@ -18,6 +18,12 @@ module.exports = function setupClient(sessionID, queryID, messageCallback, error
 
     client.on('connect', function (connection) {
         console.log('WebSocket Client Connected');
+
+        call.on('end', () => {
+            console.log('Closing connection');
+            connection.close(0);
+        });
+
         connection.on('error', function (error) {
             console.log("Connection Error: " + error.toString());
             errorCallback();
@@ -49,4 +55,6 @@ module.exports = function setupClient(sessionID, queryID, messageCallback, error
     client.connect(WS_URL, [], 'https://' + HOST, {
         "Cookie": "POESESSID=" + sessionID
     });
+    
+    client.abort
 }
